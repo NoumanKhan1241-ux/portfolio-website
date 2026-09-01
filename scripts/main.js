@@ -1,40 +1,95 @@
 document.addEventListener('DOMContentLoaded', async ()=>{
   // Show a loading overlay with percentage + quote, then initialize
   async function runLoader(){
-    return new Promise(resolve=>{
-      const existing = document.getElementById('site-loader');
-      if(existing) existing.remove();
-      const loader = document.createElement('div');
-      loader.id = 'site-loader';
-      loader.innerHTML = `
-        <div class="loader-inner">
-          <div class="loader-percent">0%</div>
-          <div class="loader-quote">"I don’t just want to write code. I want to build ideas."</div>
-        </div>
-      `;
-      document.body.appendChild(loader);
+    // returns a promise that resolves after loader fades out
+    return new Promise((resolve)=>{
+      try{
+        // reuse existing loader if it was present in HTML to avoid flicker
+        let loader = document.getElementById('site-loader');
+        if(!loader){
+          loader = document.createElement('div');
+          loader.id = 'site-loader';
+          loader.setAttribute('role','status');
+          loader.setAttribute('aria-live','polite');
+          loader.innerHTML = `
+            <div class="loader-inner">
+              <div class="loader-spinner" aria-hidden="true"></div>
+              <div class="loader-percent" aria-hidden="true">0%</div>
+              <div class="loader-quote">"I don’t just want to write code. I want to build ideas."</div>
+            </div>
+          `;
+          // insert at start of body so it's always on top
+          document.body.insertBefore(loader, document.body.firstChild);
+        }
 
-      const duration = 1800; // ms
-      const start = performance.now();
-      function step(now){
-        const t = Math.min(1,(now-start)/duration);
-        const pct = Math.round(t*100);
-        loader.querySelector('.loader-percent').textContent = pct+"%";
-        if(t<1) requestAnimationFrame(step);
-        else {
-          // hold a little then fade
+        // ensure page is visually hidden until reveal (hide content wrapper, not body)
+        if(!document.body.classList.contains('preload')) document.body.classList.add('preload');
+
+        let pct = 0;
+        const duration = 2600; // total duration ms (longer so percent stays visible)
+        const start = performance.now();
+
+        function tick(now){
+          const t = Math.min(1, (now - start) / duration);
+          // easeOutCubic
+          const eased = 1 - Math.pow(1 - t, 3);
+          pct = Math.min(100, Math.round(eased * 100));
+          const pctEl = loader.querySelector('.loader-percent');
+          if(pctEl) pctEl.textContent = pct + '%';
+          if(t < 1) requestAnimationFrame(tick);
+          else finish();
+        }
+
+        function finish(){
+          // small delay so percentage is readable
           setTimeout(()=>{
             loader.style.opacity = '0';
-            loader.style.pointerEvents = 'none';
-            setTimeout(()=>{ loader.remove(); resolve(); }, 600);
-          },250);
+            loader.setAttribute('aria-hidden','true');
+            // show page
+            document.body.classList.remove('preload');
+            // remove after fade
+            setTimeout(()=>{
+              if(loader && loader.parentNode) loader.parentNode.removeChild(loader);
+              resolve();
+            }, 700);
+          }, 600);
         }
+
+        // safety timeout to reveal page if something goes wrong
+        const fallback = setTimeout(()=>{
+          if(document.body.classList.contains('preload')) document.body.classList.remove('preload');
+          if(loader && loader.parentNode) loader.parentNode.removeChild(loader);
+          resolve();
+        }, 6000);
+
+        requestAnimationFrame(tick);
+      }catch(e){
+        console.error('runLoader error', e);
+        // ensure page is revealed
+        document.body.classList.remove('preload');
+        const existing = document.getElementById('site-loader'); if(existing) existing.remove();
+        resolve();
       }
-      requestAnimationFrame(step);
     });
   }
 
-  await runLoader();
+  // run loader but guard against errors or stalls
+  let loaderDone = false;
+  try{
+    await runLoader();
+    loaderDone = true;
+  }catch(err){
+    console.error('Loader failed:', err);
+  }
+  // safety: ensure page isn't stuck hidden if loader errors or takes too long
+  setTimeout(()=>{
+    if(!loaderDone){
+      console.warn('Loader fallback triggered — revealing page.');
+      document.body.classList.remove('preload');
+      const existing = document.getElementById('site-loader');
+      if(existing) existing.remove();
+    }
+  }, 3800);
 
   // Basic GSAP scroll reveal
   if(window.gsap && window.ScrollTrigger){
@@ -90,7 +145,9 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   (function setupThreeHero(){
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const container = document.getElementById('hero-canvas');
+    // if the hero canvas is not visible (we're showing centered text only), skip initialization
     if(!container || !window.THREE || reduced) return;
+    if(container.offsetParent === null || getComputedStyle(container).display === 'none') return;
 
     let renderer, scene, camera, mesh, clock;
     const DPR = Math.min(window.devicePixelRatio || 1, 2);
@@ -292,10 +349,11 @@ document.addEventListener('DOMContentLoaded', async ()=>{
   });
 
   // Dynamically load project entries from JSON and render cards
-  (function loadProjects(){
+  (async function loadProjects(){
     const grid = document.querySelector('#projects .grid');
     if(!grid) return;
-    fetch('assets/projects.json').then(r=>r.json()).then(list=>{
+
+    async function renderList(list){
       grid.innerHTML = '';
       list.forEach(p=>{
         const art = document.createElement('article'); art.className='card';
@@ -306,21 +364,41 @@ document.addEventListener('DOMContentLoaded', async ()=>{
             <p class="muted">${p.short}</p>
             <div class="tags">${(p.tech||[]).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
             <div class="card-actions">
-              <a class="btn small" href="${p.live}" target="_blank">Live</a>
-              <a class="btn small ghost" href="${p.repo}" target="_blank">Code</a>
+              <a class="btn small" href="${p.live||'#'}" target="_blank">Live</a>
+              <a class="btn small ghost" href="${p.repo||'#'}" target="_blank">Code</a>
             </div>
           </div>
         `;
         grid.appendChild(art);
       });
-    }).catch(err=>{ console.warn('projects load failed', err); });
+    }
+
+    let projects = null;
+    // If served via file://, fetch may be blocked by browser CORS — provide a fallback
+    if(location.protocol === 'file:'){
+      console.warn('Running from file:// — network fetches may be blocked. Using fallback projects.');
+    }
+
+    try{
+      const resp = await fetch('assets/projects.json');
+      if(resp.ok) projects = await resp.json();
+      else console.warn('projects.json fetch returned', resp.status);
+    }catch(err){
+      console.warn('projects load failed', err);
+    }
+
+    if(!projects || !projects.length){
+      // fallback sample projects to ensure page renders when opened locally
+      projects = [
+        { title: 'Sample Project', short: 'Local preview placeholder.', image: 'assets/project-placeholder.svg', tech:['HTML','CSS','JS'], live:'#', repo:'#' }
+      ];
+    }
+
+    renderList(projects);
   })();
 
   // Resume download button
-  const dl = document.getElementById('download-resume');
-  if(dl){
-    dl.addEventListener('click',()=>{
-      window.open('assets/Muhammad_Nouman_Khan_Resume.docx','_blank');
-    });
-  }
+  // remove previous download-resume button handler (download now in hero/contact links)
+  const oldDl = document.getElementById('download-resume');
+  if(oldDl) oldDl.remove();
 });
