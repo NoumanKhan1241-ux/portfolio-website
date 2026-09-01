@@ -350,27 +350,73 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
   // Dynamically load project entries from JSON and render cards
   (async function loadProjects(){
-    const grid = document.querySelector('#projects .grid');
-    if(!grid) return;
+    console.log('[loadProjects] initializing');
+    let grid = document.querySelector('#projects .grid');
+    if(!grid){
+      console.warn('[loadProjects] selector "#projects .grid" did not match — trying "#projects-grid"');
+      grid = document.querySelector('#projects-grid');
+    }
+    if(!grid){
+      console.error('[loadProjects] projects grid not found in DOM — aborting render');
+      return;
+    }
 
     async function renderList(list){
-      grid.innerHTML = '';
-      list.forEach(p=>{
-        const art = document.createElement('article'); art.className='card';
-        art.innerHTML = `
-          <img src="${p.image}" alt="${p.title} screenshot" />
-          <div class="card-body">
-            <h3>${p.title}</h3>
-            <p class="muted">${p.short}</p>
-            <div class="tags">${(p.tech||[]).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
-            <div class="card-actions">
-              <a class="btn small" href="${p.live||'#'}" target="_blank">Live</a>
-              <a class="btn small ghost" href="${p.repo||'#'}" target="_blank">Code</a>
+      try{
+        grid.innerHTML = '';
+        // render featured (first item) into #project-featured and details
+        const featuredRoot = document.getElementById('project-featured');
+        const featuredDetails = document.getElementById('featured-details');
+        const featuredTags = document.getElementById('featured-tags');
+        const liveBtn = document.getElementById('featured-live');
+        const codeBtn = document.getElementById('featured-code');
+        const caseBtn = document.getElementById('featured-case');
+
+        if(list && list.length){
+          const f = list[0];
+          if(featuredRoot){
+            featuredRoot.innerHTML = `<a href="${f.case||'#'}" class="featured-link"><img src="${f.image}" alt="${f.title}" /></a>`;
+          }
+          if(featuredDetails){
+            const fdTitle = featuredDetails.querySelector('.fd-title');
+            const fdMeta = featuredDetails.querySelector('.fd-meta');
+            const fdDesc = featuredDetails.querySelector('.fd-desc');
+            if(fdTitle) fdTitle.textContent = f.title || '';
+            if(fdMeta) fdMeta.textContent = f.short || '';
+            if(fdDesc) fdDesc.textContent = (f.long || f.short || '—');
+          }
+          if(featuredTags){
+            featuredTags.innerHTML = (f.tech||[]).map(t=>`<span class="tech-pill">${t}</span>`).join('');
+          }
+          if(liveBtn) liveBtn.href = f.live || '#';
+          if(codeBtn) codeBtn.href = f.repo || '#';
+          if(caseBtn) caseBtn.href = f.case || '#';
+        }
+
+        // render the remaining items as thumbnails
+        const rest = (list && list.length>1)? list.slice(1) : [];
+        if(rest.length === 0 && list.length===1){
+          // make a placeholder thumb so layout still looks balanced
+        }
+
+        rest.forEach(p=>{
+          const art = document.createElement('article'); art.className='card';
+          art.innerHTML = `
+            <a href="${p.case||'#'}"><img src="${p.image}" alt="${p.title} screenshot" /></a>
+            <div class="card-body">
+              <h3>${p.title}</h3>
+              <p class="muted">${p.short}</p>
+              <div class="tags">${(p.tech||[]).map(t=>`<span class="tech-pill">${t}</span>`).join('')}</div>
+              <div class="card-actions">
+                ${p.case?`<a class="btn small primary" href="${p.case}">Open Case File →</a>`:''}
+              </div>
             </div>
-          </div>
-        `;
-        grid.appendChild(art);
-      });
+          `;
+          grid.appendChild(art);
+        });
+      }catch(e){
+        console.error('[loadProjects] renderList error', e);
+      }
     }
 
     let projects = null;
@@ -380,11 +426,22 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     }
 
     try{
+      console.log('[loadProjects] fetching assets/projects.json');
       const resp = await fetch('assets/projects.json');
-      if(resp.ok) projects = await resp.json();
-      else console.warn('projects.json fetch returned', resp.status);
+      if(resp.ok){
+        projects = await resp.json();
+        console.log('[loadProjects] fetched projects.json', projects.length, 'items');
+      } else {
+        console.warn('[loadProjects] projects.json fetch returned', resp.status);
+      }
     }catch(err){
       console.warn('projects load failed', err);
+    }
+
+    // fallback: use inlined window.__PROJECTS when available (file:// previews)
+    if((!projects || !projects.length) && window.__PROJECTS){
+      console.log('[loadProjects] using inlined window.__PROJECTS fallback');
+      projects = window.__PROJECTS;
     }
 
     if(!projects || !projects.length){
@@ -395,7 +452,58 @@ document.addEventListener('DOMContentLoaded', async ()=>{
     }
 
     renderList(projects);
+    if(window.initLightbox) window.initLightbox();
   })();
+
+  // Lightbox implementation for gallery images
+  window.initLightbox = function(){
+    // avoid duplicate init
+    if(document.getElementById('lightbox-overlay')) return;
+    const overlay = document.createElement('div');
+    overlay.id = 'lightbox-overlay';
+    overlay.innerHTML = `
+      <div class="lb-inner">
+        <button class="lb-close" aria-label="Close">×</button>
+        <button class="lb-prev" aria-label="Previous">‹</button>
+        <img class="lb-image" src="" alt="" />
+        <button class="lb-next" aria-label="Next">›</button>
+      </div>
+    `;
+    document.body.appendChild(overlay);
+
+    const lbImage = overlay.querySelector('.lb-image');
+    const closeBtn = overlay.querySelector('.lb-close');
+    const prevBtn = overlay.querySelector('.lb-prev');
+    const nextBtn = overlay.querySelector('.lb-next');
+
+    let currentGallery = [];
+    let currentIndex = 0;
+
+    function open(imgs, idx){
+      currentGallery = imgs;
+      currentIndex = idx;
+      lbImage.src = currentGallery[currentIndex].src;
+      overlay.classList.add('open');
+    }
+
+    function close(){ overlay.classList.remove('open'); }
+    function prev(){ if(currentIndex>0){ currentIndex--; lbImage.src = currentGallery[currentIndex].src }}
+    function next(){ if(currentIndex<currentGallery.length-1){ currentIndex++; lbImage.src = currentGallery[currentIndex].src }}
+
+    closeBtn.addEventListener('click', close);
+    prevBtn.addEventListener('click', prev);
+    nextBtn.addEventListener('click', next);
+    overlay.addEventListener('click', e=>{ if(e.target===overlay) close(); });
+
+    // attach click handlers for gallery images
+    document.querySelectorAll('.gallery, .grid').forEach(g=>{
+      const imgs = Array.from(g.querySelectorAll('img'));
+      imgs.forEach((img,i)=>{
+        img.style.cursor = 'zoom-in';
+        img.addEventListener('click', ()=> open(imgs,i));
+      });
+    });
+  };
 
   // Resume download button
   // remove previous download-resume button handler (download now in hero/contact links)

@@ -70,20 +70,37 @@
     </section>
 
     <section id="projects" class="projects container section-bg">
-      <h2>Selected Projects</h2>
-      <div class="grid">
-        <!-- Example project card -->
-        <article class="card">
-          <img src="assets/project-1.png" alt="Project screenshot" />
-          <div class="card-body">
-            <h3>Project Title</h3>
-            <p class="muted">Short description and the technologies used.</p>
-            <div class="card-actions">
-              <a class="btn small" href="#">Live</a>
-              <a class="btn small ghost" href="#">Code</a>
+      <h2>Selected Works</h2>
+      <div class="projects-inner">
+        <div id="project-featured" class="featured">
+          <!-- featured project injected here -->
+          <div class="featured-placeholder">
+            <h3 class="featured-title">Project Preview</h3>
+            <p class="muted">This image is a local placeholder for file:// previews</p>
+          </div>
+        </div>
+
+        <aside class="featured-details" id="featured-details">
+          <!-- featured details injected here -->
+          <div class="fd-inner">
+            <h3 class="fd-title">Sample Project</h3>
+            <p class="fd-meta muted">Local preview placeholder.</p>
+            <p class="fd-desc muted">A short description showcasing approach, outcomes and services provided. Click <span class="strong">Open Case File</span> to view the full case study.</p>
+            <div id="featured-tags" class="tags"></div>
+            <div class="fd-actions">
+              <a id="featured-live" class="btn small" href="#" target="_blank">Live</a>
+              <a id="featured-code" class="btn small ghost" href="#" target="_blank">Code</a>
+              <a id="featured-case" class="btn small primary" href="#">Open Case File →</a>
             </div>
           </div>
-        </article>
+        </aside>
+      </div>
+
+      <div class="projects-thumbs">
+        <h4 class="muted">More Work</h4>
+        <div class="grid" id="projects-grid">
+          <!-- thumbnail project cards are rendered dynamically -->
+        </div>
       </div>
     </section>
 
@@ -225,6 +242,38 @@
   <script src="https://unpkg.com/three@0.154.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
   <script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
   <script src="https://unpkg.com/lottie-web/build/player/lottie.min.js"></script>
+  <!-- Inline project data to support file:// previews and guarantee project rendering -->
+  <script>
+    window.__PROJECTS = [
+      {
+        "title": "Crown Charms",
+        "short": "A minimalist jewellery e-commerce experience designed to present products with elegance.",
+        "tech": ["HTML","CSS","JavaScript","UI/UX"],
+        "image": "assets/CrownCharmz/cc1.png",
+        "case": "projects/crown-charms.html",
+        "live": "#",
+        "repo": "#"
+      },
+      {
+        "title": "Daraz Khel Construction Company",
+        "short": "A professional digital presence designed to showcase construction services and build trust with potential clients.",
+        "tech": ["HTML","CSS","JavaScript","Responsive Design"],
+        "image": "assets/Dcc/dcc1.png",
+        "case": "projects/daraz-khel.html",
+        "live": "#",
+        "repo": "#"
+      },
+      {
+        "title": "FlamLingo",
+        "short": "AI-powered Pashto learning platform combining lessons, quizzes, and conversational practice.",
+        "tech": ["Full-stack","Node.js","AI","Responsive Design"],
+        "image": "assets/flamlingo/1st.png",
+        "case": "projects/flamlingo.html",
+        "live": "#",
+        "repo": "#"
+      }
+    ];
+  </script>
   <script src="scripts/main.js"></script>
 </body>
 </html>

@@ -1,25 +1,28 @@
 [
   {
-    "title": "Darazkhel Construction Company Website",
-    "short": "Designed and developed a professional, responsive website to showcase company services and projects, from concept to deployment.",
+    "title": "Daraz Khel Construction Company",
+    "short": "A professional digital presence designed to showcase construction services and build trust with potential clients.",
     "tech": ["HTML","CSS","JavaScript","Responsive Design"],
-    "image": "assets/project-daraz.svg",
+    "image": "assets/Dcc/dcc1.png",
+    "case": "projects/daraz-khel.html",
     "live": "#",
     "repo": "#"
   },
   {
-    "title": "CrownCharmz Jewelry Store",
-    "short": "Built an e-commerce style website with attractive product layout, category structuring, and improved customer browsing experience.",
+    "title": "Crown Charms",
+    "short": "A minimalist jewellery e-commerce experience designed to present products with elegance.",
     "tech": ["HTML","CSS","JavaScript","UI/UX"],
-    "image": "assets/project-crown.svg",
+    "image": "assets/CrownCharmz/cc1.png",
+    "case": "projects/crown-charms.html",
     "live": "#",
     "repo": "#"
   },
   {
-    "title": "Flamlingo — Pashto Language Learning Platform",
-    "short": "Final year full-stack project: a language learning platform featuring structured lessons and interactive learning features.",
-    "tech": ["Full-stack","Node.js","Responsive Design"],
-    "image": "assets/project-flamlingo.svg",
+    "title": "FlamLingo",
+    "short": "AI-powered Pashto learning platform combining lessons, quizzes, and conversational practice.",
+    "tech": ["Full-stack","Node.js","AI","Responsive Design"],
+    "image": "assets/flamlingo/1st.png",
+    "case": "projects/flamlingo.html",
     "live": "#",
     "repo": "#"
   }
