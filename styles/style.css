@@ -1,3 +1,4 @@
+/* Restored original stylesheet content */
 :root{
   --bg:#050508;
   --panel:#0b0b0f;
@@ -13,7 +14,7 @@
 html,body{height:100%}
 body{
   margin:0;
-  font-family:Inter, system-ui, -apple-system, "Segoe UI", Roboto, 'Helvetica Neue', Arial;
+  font-family: 'Playfair Display', 'Nunito', 'Sora', 'Raleway', 'Segoe UI', Roboto, 'Helvetica Neue', Arial, system-ui, -apple-system, sans-serif;
   color:#e9ecff;
   background:linear-gradient(180deg,var(--bg),#030305);
   background-attachment:fixed;
@@ -40,8 +41,11 @@ body.preload #site-content{opacity:0;pointer-events:none}
 .tagline{color:var(--muted);margin-top:8px}
 .cta-row{margin-top:18px}
 .btn{display:inline-block;padding:10px 16px;border-radius:10px;text-decoration:none;color:inherit;border:1px solid transparent}
-.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent-2));color:#06060a}
+.btn.primary{background:var(--accent);color:#ffffff}
 .btn.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06)}
+/* Return button used on case pages */
+.btn.return{background:var(--accent);color:#ffffff;padding:10px 18px;border-radius:12px;display:inline-block;text-decoration:none;font-weight:700}
+.btn.return:hover{transform:translateY(-3px)}
 /* hero visual removed for clean centered text — keep a subtle background */
 .hero-visual{display:none}
 
@@ -143,6 +147,11 @@ body.preload #site-content{opacity:0;pointer-events:none}
   .featured img{height:260px}
 }
 
+/* Projects intro list */
+.projects-intro{margin:14px 0 18px}
+.proj-list{list-style:decimal;margin:8px 0 0;padding-left:18px;color:var(--muted)}
+.proj-list li{margin-bottom:8px}
+
 /* Service list styles */
 .services-list{display:grid;gap:18px}
 .service-item{display:grid;grid-template-columns:64px 1fr;gap:14px;align-items:flex-start;padding:14px;border-radius:10px}
@@ -180,7 +189,7 @@ body.preload #site-content{opacity:0;pointer-events:none}
 .form-actions{display:flex;gap:12px;align-items:center;margin-top:8px}
 
 @media (max-width:900px){
-  .contact-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr}
   .contact-card{order:2}
   .contact-form-wrap{order:1}
 }
@@ -206,8 +215,9 @@ body.preload #site-content{opacity:0;pointer-events:none}
 #lightbox-overlay .lb-image{max-width:100%;max-height:80vh;border-radius:8px;box-shadow:0 30px 80px rgba(0,0,0,0.7)}
 #lightbox-overlay .lb-close, #lightbox-overlay .lb-prev, #lightbox-overlay .lb-next{position:absolute;background:rgba(0,0,0,0.5);border:0;color:#fff;font-size:28px;cursor:pointer;padding:12px;border-radius:999px;backdrop-filter:blur(6px);box-shadow:0 8px 30px rgba(0,0,0,0.5)}
 #lightbox-overlay .lb-close{top:12px;right:12px;font-size:26px;background:linear-gradient(90deg,#fff,#f0f0f0);color:#000;padding:10px 12px}
-#lightbox-overlay .lb-prev{left:18px;top:50%;transform:translateY(-50%);}
-#lightbox-overlay .lb-next{right:18px;top:50%;transform:translateY(-50%);}
+#lightbox-overlay .lb-close{top:12px;right:12px;font-size:26px;background:#ffffff;color:#000;padding:10px 12px}
+#lightbox-overlay .lb-prev{left:18px;top:50%;transform:translateY(-50%);} 
+#lightbox-overlay .lb-next{right:18px;top:50%;transform:translateY(-50%);} 
 #lightbox-overlay .lb-close:focus, #lightbox-overlay .lb-prev:focus, #lightbox-overlay .lb-next:focus{outline:3px solid rgba(124,92,255,0.25);outline-offset:4px}
 #lightbox-overlay .lb-prev:hover, #lightbox-overlay .lb-next:hover{background:rgba(255,255,255,0.08);transform:translateY(-50%) scale(1.06)}
 #lightbox-overlay .lb-close:hover{transform:scale(1.04)}

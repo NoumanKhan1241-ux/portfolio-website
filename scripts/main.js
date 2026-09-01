@@ -141,6 +141,19 @@ document.addEventListener('DOMContentLoaded', async ()=>{
       }
     });
   }
+  // Hero 'Get in Touch' button: smooth scroll to contact and subtle reveal
+  const contactBtn = document.getElementById('hero-contact-btn');
+  if(contactBtn){
+    contactBtn.addEventListener('click', e=>{
+      e.preventDefault();
+      const target = document.querySelector('#contact');
+      smoothScrollTo(target);
+      const card = document.querySelector('#contact .contact-card') || document.querySelector('#contact');
+      if(card && window.gsap){
+        gsap.fromTo(card, {y:18,opacity:0.85},{y:0,opacity:1,duration:0.8,ease:'power3.out'});
+      }
+    });
+  }
   // Three.js hero scene
   (function setupThreeHero(){
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

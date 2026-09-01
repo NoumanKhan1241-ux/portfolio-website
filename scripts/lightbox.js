@@ -29,8 +29,16 @@ window.initLightbox = (function(){
       overlay.classList.add('open');
     }
     function close(){ overlay.classList.remove('open'); }
-    function prev(){ if(currentIndex>0){ currentIndex--; lbImage.src = currentGallery[currentIndex].src }}
-    function next(){ if(currentIndex<currentGallery.length-1){ currentIndex++; lbImage.src = currentGallery[currentIndex].src }}
+    function prev(){ 
+      if(currentGallery.length===0) return;
+      currentIndex = (currentIndex - 1 + currentGallery.length) % currentGallery.length;
+      lbImage.src = currentGallery[currentIndex].src;
+    }
+    function next(){ 
+      if(currentGallery.length===0) return;
+      currentIndex = (currentIndex + 1) % currentGallery.length;
+      lbImage.src = currentGallery[currentIndex].src;
+    }
 
     closeBtn.addEventListener('click', close);
     prevBtn.addEventListener('click', prev);
