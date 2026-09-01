@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Your Name — Portfolio</title>
+  <meta name="description" content="Portfolio of a full stack web developer — projects, skills, and contact." />
+  <link rel="stylesheet" href="styles/style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a class="brand" href="#">
+        <img src="assets/logo.svg" alt="Logo" height="36" />
+      </a>
+      <nav class="nav">
+        <a href="#intro">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#services">Services</a>
+        <a href="#skills">Skills</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section id="hero" class="hero">
+      <div class="hero-inner container">
+        <div class="hero-copy">
+          <h1 class="name">Hi, I'm Muhammad Nouman Khan</h1>
+          <p class="tagline">Full-stack web developer crafting experimental, animated web experiences — Node.js, Postgres, Three.js.</p>
+          <div class="cta-row">
+            <a class="btn primary" href="#projects">View Projects</a>
+            <a class="btn ghost" href="assets/Muhammad_Nouman_Khan_Resume.docx" target="_blank">Download Resume</a>
+          </div>
+        </div>
+        <div class="hero-visual">
+          <div id="hero-canvas" aria-hidden="true"></div>
+          <img id="profile-hero" src="assets/profile.png" alt="Muhammad Nouman Khan" onerror="this.src='assets/profile.svg'" />
+        </div>
+      </div>
+    </section>
+
+    <section id="intro" class="intro container">
+      <div class="about-grid">
+        <div class="about-text">
+          <h2>About</h2>
+          <p>I'm a passionate Full Stack Developer who believes that technology is more than just code—it is a way to turn ideas into something real, useful, and meaningful. My journey in computer science has taught me that every great solution begins with curiosity, patience, and the courage to keep going when things don’t work the first time.</p>
+          <p>I enjoy building digital experiences that combine clean design, thoughtful functionality, and powerful technology. For me, development is not simply about making an application work; it is about understanding the problem, imagining a better solution, and creating something that can genuinely make a difference.</p>
+          <p>Every challenge I face teaches me something new. Every bug, failed attempt, and difficult problem has helped shape the developer I am becoming. I believe growth comes from staying curious, learning continuously, and never being afraid to step outside my comfort zone.</p>
+          <blockquote>"I don’t just want to write code. I want to build ideas, solve real problems, and leave something meaningful behind through the work I create."</blockquote>
+        </div>
+        <div class="about-photo">
+          <img id="profile-about" src="assets/profile.png" alt="Muhammad Nouman Khan" onerror="this.src='assets/profile.svg'" />
+        </div>
+      </div>
+    </section>
+
+    <section id="projects" class="projects container">
+      <h2>Selected Projects</h2>
+      <div class="grid">
+        <!-- Example project card -->
+        <article class="card">
+          <img src="assets/project-1.png" alt="Project screenshot" />
+          <div class="card-body">
+            <h3>Project Title</h3>
+            <p class="muted">Short description and the technologies used.</p>
+            <div class="card-actions">
+              <a class="btn small" href="#">Live</a>
+              <a class="btn small ghost" href="#">Code</a>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="services" class="services container">
+      <h2>Products & Services</h2>
+      <p>Describe your offerings — freelance, products, templates, consulting, etc.</p>
+    </section>
+
+    <section id="skills" class="skills container">
+      <h2>Languages, Databases, Libraries & APIs</h2>
+      <ul class="tech-list">
+        <li>HTML, CSS, JavaScript</li>
+        <li>Node.js, Express</li>
+        <li>Postgres, MongoDB</li>
+        <li>GSAP, Three.js, Lottie</li>
+        <li>REST, GraphQL</li>
+      </ul>
+    </section>
+
+    <section id="contact" class="contact container">
+      <h2>Contact</h2>
+      <div class="contact-grid">
+        <div class="contact-card">
+          <h3>Let's build something together</h3>
+          <p>I'm available for freelance work and full-time opportunities. Send a brief message or share a link to your idea and I'll get back to you promptly.</p>
+          <ul class="contact-meta">
+            <li><strong>Email:</strong> <a href="mailto:you@example.com">you@example.com</a></li>
+            <li><strong>Location:</strong> Your City, Country</li>
+            <li><strong>Resume:</strong> <a href="assets/Muhammad_Nouman_Khan_Resume.docx" target="_blank">Download</a></li>
+          </ul>
+        </div>
+        <div class="contact-form-wrap">
+          <form id="contact-form">
+            <div class="field-row">
+              <label>
+                <span>Name</span>
+                <input name="name" required />
+              </label>
+              <label>
+                <span>Email</span>
+                <input name="email" type="email" required />
+              </label>
+            </div>
+            <label>
+              <span>Message</span>
+              <textarea name="message" rows="6" required></textarea>
+            </label>
+            <div class="form-actions">
+              <button class="btn primary" type="submit">Send Message</button>
+              <button class="btn ghost" type="button" id="download-resume">Download Resume</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p>© Your Name — Built with experimental animations.</p>
+      <p><a href="https://vercel.com" target="_blank" rel="noopener">Deployed on Vercel</a></p>
+    </div>
+  </footer>
+
+  <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollTrigger.min.js"></script>
+  <script src="https://unpkg.com/three@0.154.0/build/three.min.js"></script>
+  <!-- Three.js postprocessing (non-module builds) -->
+  <script src="https://unpkg.com/three@0.154.0/examples/js/postprocessing/EffectComposer.js"></script>
+  <script src="https://unpkg.com/three@0.154.0/examples/js/postprocessing/RenderPass.js"></script>
+  <script src="https://unpkg.com/three@0.154.0/examples/js/postprocessing/ShaderPass.js"></script>
+  <script src="https://unpkg.com/three@0.154.0/examples/js/shaders/CopyShader.js"></script>
+  <script src="https://unpkg.com/three@0.154.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+  <script src="https://unpkg.com/three@0.154.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+  <script src="https://unpkg.com/gsap@3/dist/ScrollToPlugin.min.js"></script>
+  <script src="https://unpkg.com/lottie-web/build/player/lottie.min.js"></script>
+  <script src="scripts/main.js"></script>
+</body>
+</html>

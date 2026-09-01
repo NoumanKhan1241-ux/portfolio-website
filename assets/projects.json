@@ -1,0 +1,18 @@
+[
+  {
+    "title": "Project Alpha",
+    "short": "An interactive data visualization dashboard built with D3 and Three.js.",
+    "tech": ["JavaScript","Three.js","D3","Node.js"],
+    "image": "assets/project-1.png",
+    "live": "#",
+    "repo": "#"
+  },
+  {
+    "title": "Project Beta",
+    "short": "A full-stack marketplace with real-time updates and Postgres persistence.",
+    "tech": ["React","Node.js","Postgres","WebSockets"],
+    "image": "assets/project-2.png",
+    "live": "#",
+    "repo": "#"
+  }
+]
