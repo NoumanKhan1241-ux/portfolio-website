@@ -1,17 +1,25 @@
 [
   {
-    "title": "Project Alpha",
-    "short": "An interactive data visualization dashboard built with D3 and Three.js.",
-    "tech": ["JavaScript","Three.js","D3","Node.js"],
-    "image": "assets/project-1.png",
+    "title": "Darazkhel Construction Company Website",
+    "short": "Designed and developed a professional, responsive website to showcase company services and projects, from concept to deployment.",
+    "tech": ["HTML","CSS","JavaScript","Responsive Design"],
+    "image": "assets/project-daraz.svg",
     "live": "#",
     "repo": "#"
   },
   {
-    "title": "Project Beta",
-    "short": "A full-stack marketplace with real-time updates and Postgres persistence.",
-    "tech": ["React","Node.js","Postgres","WebSockets"],
-    "image": "assets/project-2.png",
+    "title": "CrownCharmz Jewelry Store",
+    "short": "Built an e-commerce style website with attractive product layout, category structuring, and improved customer browsing experience.",
+    "tech": ["HTML","CSS","JavaScript","UI/UX"],
+    "image": "assets/project-crown.svg",
+    "live": "#",
+    "repo": "#"
+  },
+  {
+    "title": "Flamlingo — Pashto Language Learning Platform",
+    "short": "Final year full-stack project: a language learning platform featuring structured lessons and interactive learning features.",
+    "tech": ["Full-stack","Node.js","Responsive Design"],
+    "image": "assets/project-flamlingo.svg",
     "live": "#",
     "repo": "#"
   }

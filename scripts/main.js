@@ -1,4 +1,41 @@
-document.addEventListener('DOMContentLoaded',()=>{
+document.addEventListener('DOMContentLoaded', async ()=>{
+  // Show a loading overlay with percentage + quote, then initialize
+  async function runLoader(){
+    return new Promise(resolve=>{
+      const existing = document.getElementById('site-loader');
+      if(existing) existing.remove();
+      const loader = document.createElement('div');
+      loader.id = 'site-loader';
+      loader.innerHTML = `
+        <div class="loader-inner">
+          <div class="loader-percent">0%</div>
+          <div class="loader-quote">"I don’t just want to write code. I want to build ideas."</div>
+        </div>
+      `;
+      document.body.appendChild(loader);
+
+      const duration = 1800; // ms
+      const start = performance.now();
+      function step(now){
+        const t = Math.min(1,(now-start)/duration);
+        const pct = Math.round(t*100);
+        loader.querySelector('.loader-percent').textContent = pct+"%";
+        if(t<1) requestAnimationFrame(step);
+        else {
+          // hold a little then fade
+          setTimeout(()=>{
+            loader.style.opacity = '0';
+            loader.style.pointerEvents = 'none';
+            setTimeout(()=>{ loader.remove(); resolve(); }, 600);
+          },250);
+        }
+      }
+      requestAnimationFrame(step);
+    });
+  }
+
+  await runLoader();
+
   // Basic GSAP scroll reveal
   if(window.gsap && window.ScrollTrigger){
     gsap.registerPlugin(ScrollTrigger);
@@ -32,6 +69,23 @@ document.addEventListener('DOMContentLoaded',()=>{
       smoothScrollTo(target);
     });
   });
+  // Hero 'View Projects' button: smooth scroll + project entrance animation
+  const heroBtn = document.getElementById('hero-projects-btn');
+  if(heroBtn){
+    heroBtn.addEventListener('click', e=>{
+      e.preventDefault();
+      const target = document.querySelector('#projects');
+      smoothScrollTo(target);
+      // small entrance animation for project grid
+      const grid = document.querySelector('#projects .grid');
+      if(grid && window.gsap){
+        gsap.fromTo(grid, {y:20,opacity:0,scale:0.98},{y:0,opacity:1,scale:1,duration:0.8,ease:'power3.out'});
+        gsap.utils.toArray('#projects .card').forEach((c,i)=>{
+          gsap.fromTo(c,{y:14,opacity:0},{y:0,opacity:1,duration:0.6,delay:0.12 + i*0.06,ease:'power2.out'});
+        });
+      }
+    });
+  }
   // Three.js hero scene
   (function setupThreeHero(){
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
