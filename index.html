@@ -185,23 +185,28 @@
           </ul>
         </div>
         <div class="contact-form-wrap">
-          <form id="contact-form">
+          <div data-fs-success></div>
+          <div data-fs-error></div>
+          <form id="contact-form" action="https://formspree.io/f/xbgjoalq" method="POST" data-fs-form>
             <div class="field-row">
               <label>
                 <span>Name</span>
-                <input name="name" required />
+                <input name="name" required data-fs-field />
+                <span data-fs-error="name"></span>
               </label>
               <label>
                 <span>Email</span>
-                <input name="email" type="email" required />
+                <input name="email" type="email" required data-fs-field />
+                <span data-fs-error="email"></span>
               </label>
             </div>
             <label>
               <span>Message</span>
-              <textarea name="message" rows="6" required></textarea>
+              <textarea name="message" rows="6" required data-fs-field></textarea>
+              <span data-fs-error="message"></span>
             </label>
             <div class="form-actions">
-              <button class="btn primary" type="submit">Send Message</button>
+              <button class="btn primary" type="submit" data-fs-submit-btn>Send Message</button>
             </div>
           </form>
         </div>
@@ -269,5 +274,10 @@
     ];
   </script>
   <script src="scripts/main.js"></script>
+  <script>
+    window.formspree = window.formspree || function () { (formspree.q = formspree.q || []).push(arguments); };
+    formspree('initForm', { formElement: '#contact-form', formId: 'xbgjoalq' });
+  </script>
+  <script src="https://unpkg.com/@formspree/ajax@1" defer></script>
 </body>
 </html>

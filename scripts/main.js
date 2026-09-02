@@ -311,7 +311,8 @@ document.addEventListener('DOMContentLoaded', async ()=>{
 
   // Contact form: simple client-side handler that currently prevents default and shows an alert
   const form = document.getElementById('contact-form');
-  if(form){
+  // If the form is managed by Formspree (data-fs-form), skip the demo handler
+  if(form && !form.hasAttribute('data-fs-form')){
     form.addEventListener('submit',e=>{
       e.preventDefault();
       // show animated success
