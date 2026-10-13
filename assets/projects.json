@@ -1,20 +1,20 @@
 [
   {
+    "title": "Vertex Connect",
+    "short": "A professional website presenting telemarketing and business communication services to a global audience.",
+    "tech": ["Business Website","UI/UX","Responsive Design"],
+    "image": "assets/veretxconnect/1.png",
+    "case": "projects/vertex-connect.html",
+    "live": "https://vertexconnect.co",
+    "repo": "#"
+  },
+  {
     "title": "Daraz Khel Construction Company",
     "short": "A professional digital presence designed to showcase construction services and build trust with potential clients.",
     "tech": ["HTML","CSS","JavaScript","Responsive Design"],
     "image": "assets/Dcc/dcc1.png",
     "case": "projects/daraz-khel.html",
-    "live": "#",
-    "repo": "#"
-  },
-  {
-    "title": "Crown Charms",
-    "short": "A minimalist jewellery e-commerce experience designed to present products with elegance.",
-    "tech": ["HTML","CSS","JavaScript","UI/UX"],
-    "image": "assets/CrownCharmz/cc1.png",
-    "case": "projects/crown-charms.html",
-    "live": "#",
+    "live": "https://dcc.org.pk",
     "repo": "#"
   },
   {
@@ -27,12 +27,12 @@
     "repo": "#"
   },
   {
-    "title": "Vertex Connect",
-    "short": "A professional website presenting telemarketing and business communication services to a global audience.",
-    "tech": ["Business Website","UI/UX","Responsive Design"],
-    "image": "assets/veretxconnect/1.png",
-    "case": "projects/vertex-connect.html",
-    "live": "https://vertexconnect.co",
+    "title": "Crown Charms",
+    "short": "A minimalist jewellery e-commerce experience designed to present products with elegance.",
+    "tech": ["HTML","CSS","JavaScript","UI/UX"],
+    "image": "assets/CrownCharmz/cc1.png",
+    "case": "projects/crown-charms.html",
+    "live": "#",
     "repo": "#"
   }
 ]
