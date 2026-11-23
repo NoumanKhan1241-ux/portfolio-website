@@ -217,7 +217,7 @@ document.addEventListener('DOMContentLoaded', async ()=>{
         const grad = cx.createRadialGradient(size/2,size/2,0,size/2,size/2,size/2);
         grad.addColorStop(0,'rgba(255,255,255,1)');
         grad.addColorStop(0.15,'rgba(255,255,255,0.9)');
-        grad.addColorStop(0.35,'rgba(124,92,255,0.6)');
+        grad.addColorStop(0.35,'rgba(99,49,251,0.7)');
         grad.addColorStop(1,'rgba(0,0,0,0)');
         cx.fillStyle = grad; cx.fillRect(0,0,size,size);
         const tex = new THREE.CanvasTexture(cvs);
